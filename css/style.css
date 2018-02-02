@@ -1,0 +1,105 @@
+*{
+    margin: 0;
+    padding:0;
+}
+
+a{
+    text-decoration: none;
+}
+
+/*让main和body一样高*/
+/*实现在页面上居中*/
+body{
+    /*height: 100vh;/*屏幕的高度,viewport height*/
+    /*background的取值颜色 地址 不重复 水平 竖直*/
+    /*背景的取值是为了在慢的网速下 图片还没加载出来时候的显示画面*/
+    background:grey url(./wall.jpg) no-repeat center center;/*做整个页面的背景*/
+    background-size: cover;/*背景图图片自适应*/
+}
+
+kbd{
+    border: 1px solid red;
+    width: 4em;
+    height: 4em;
+    display: inline-block;
+    text-transform: uppercase;/*把小写字母变成大写字母*/
+    position: relative;
+}
+kbd > button{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: none;
+}
+kbd:hover > button{
+    display: inline-block;
+}
+/*body的高度由main决定，mian的高度由它里面的rapper决定*/
+
+main{
+    text-align: center;
+    display: flex;
+    justify-content:center;/*水平居中*/
+    align-items:center;/*竖着居中*/
+    height: 100vh;/*直接main这么高，body就会被撑起来*/
+}
+
+#main{
+    display: inline-block;
+}
+#main > div:nth-child(2){
+    margin-left: -7px;
+}
+#main > div:nth-child(3){
+    margin-left:-60px;
+}
+.wrapper{
+    background: rgba(255,255,255,0.4);
+    border-radius: 10px;
+}
+
+/*先做一个key,然后调整上下间距*/
+.key{
+    width: 50px;
+    height: 40px;
+    background: linear-gradient(to bottom, #292929 0%,#111111 100%); 
+    border: 1px solid #373737;
+    color: #C5C5C5;
+    border-radius: 9px;
+    /*边框外面的边框的渐变,往外扩展2像素，用两个阴影,第三个阴影值是下面显得更加立体的部分*/
+    box-shadow: 0 0 0 1px #1A1B1C,0 0 0 2px #1F2020,0 2px 0 1px #373737;
+    /*然后把要用的颜色变成渐变的就可以了*/
+    font-size: 18px;
+    font-family:Helvetica;
+    position: relative;
+
+}
+.row{
+    margin: 16px;
+}
+.row .key{
+    margin:0 5px; 
+}
+.key img{
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    left: 4px;
+    bottom:2px;
+}
+.key .text{
+    position: absolute;
+    left:4px;
+    top:2px;
+}
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>我的导航</title>
+    <link rel="stylesheet" href="./css/style.css">
+    
+</head>
+<body>
+    <header></header>
+    <main >
+        <!-- <kbd class="key">A</kbd> ,做单个的class测试用-->
+        <!--这个容器用来做键盘的居中用-->
+        <div class="wrapper" id="main"></div>
+    </main>
+    <footer></footer>
+    <!--用js自动生成按键标签-->
+    <script>
+        //1.所有的按键
+
+        //一.初始化数据
+        var hashA = init()
+        var keys = hashA['keys']//所有的键
+        var hash = hashA['hash']//所有字母对应的域名
+        //一.初始化数据结束
+        
+        
+        //二.生成键盘
+        //遍历keys，生成kbd标签
+        //var index = 0
+        //while(index < keys['length']) 0 1 2
+        generateKeyBoard(keys,hash)
+        //二.生成键盘结束
+
+
+        //三.监听用户动作
+        ListenToUser(hash)
+
+
+
+        //下面是工具函数
+        function init(){
+            var keys = {
+                '0':{0:'q',1:'w',2:'e',3:'r',4:'t',5:'y',6:'u',7:'i',8:'o',9:'p',length:10},
+                '1':{0:'a',1:'s',2:'d',3:'f',4:'g',5:'h',6:'j',7:'k',8:'l',length:9},
+                '2':{0:'z',1:'x',2:'c',3:'v',4:'b',5:'n',6:'m',length:7},
+                'length':3
+            }
+
+            //数据结构hash，存放每个按键对应的东西
+            var hash = {
+                'q':'qq.com',
+                'w':'weibo.com',
+                'e':'ele.com',
+                'r':'renren.com',
+                't':'tianya.com',
+                'y':'youtube.com',
+                'u':'uc.com',
+                'i':'iqiyi.com',
+                'o':'opera.com',
+                'p':'undefined',
+                'a':'acfun.tv',
+                's':'sohu.com',
+                'm':'meituan.com'
+            }
+            //这个hash不是数组，不需要有length
+
+            
+            var hashInLocalStorage = getFromLocalStorage('zzz')
+            if(hashInLocalStorage){
+                hash = hashInLocalStorage
+            }
+            return{
+                //左边是一个字符串，右边是一个hash
+                //新的hash有两个key,key的名字叫keys和hash
+                "keys":keys,
+                "hash":hash
+            }
+        }
+        function generateKeyBoard(keys,hash){
+            for(var index=0;index<keys['length'];index=index+1){
+                //div后面是一个hash，hash里面是key和value
+                var div = tag('div')
+                div.className = 'row'
+
+                main.appendChild(div)
+
+                var row = keys[index]//第一个数组 第二个 第三个数组
+                //console.log(row)
+
+                //var index2 = 0
+                //while(index2 < row['length'])  0-9 0-8 0-6
+                for(var index2=0;index2<row['length'];index2++){
+                    //按住ctrl + x全部选择选中的一个内容
+                    var span = createSpan(row[index2])
+
+                    var button = createButton(row[index2])
+                    //先写好一个样式，然后让kbd的className为key,就为所有的键盘设置了样式
+                    //改变一个东西的class用className
+                   
+                    
+
+                    /*如果路径是存在的就把它设置为src
+                    如果不存在，直接src等于准备好的图片
+                    同时去监听一下这个错误（上面那个的错误，就是路径存在条件下的错误），把错误的那个图片的src设置为那个准备好的图片*/
+                    var img = createImage(hash[row[index2]])
+
+                    var kbd = tag('kbd')
+                    kbd.className = 'key'
+
+                    kbd.appendChild(span)
+                    kbd.appendChild(img)
+                    kbd.appendChild(button)
+
+                    div.appendChild(kbd)
+                }
+            }
+        }
+        function ListenToUser(hash){
+            document.onkeypress = function(xzkjcnxlkcjlk){
+                //console.log('我发现你输入了一个键');
+                //console.log('内容是');
+                //console.log(xzkjcnxlkcjlk['key']);
+
+                //知道用户按的是什么键 q w e...
+                var key = xzkjcnxlkcjlk['key']
+                //拿到按键对应的网站
+                var website = hash[key]
+                console.log(website)
+                //打开这个网站
+                //location.href = 'http://'+website
+                window.open('http://'+website,'_blank')
+
+            }
+        }
+        //得到localstorage
+        function getFromLocalStorage(name){
+            //给一个名字，找名字对应的hash
+            return JSON.parse(localStorage.getItem(name) || 'null')
+        }
+
+        function tag(tagName){
+            return document.createElement(tagName)
+        }
+        
+        /*function tag(tagName,attributes){
+            var element = document.createElement(tagName)
+            //用for-in循环遍历hash
+            for(var key in attributes){
+                element[key] = attribute[key]
+            }
+            return element
+        }*/
+        function createSpan(textContent){
+            var span = tag('span')
+            span.textContent = textContent
+            span.className = "text"
+            return span
+        }
+        function createButton(id){
+            var button = tag('button')
+            button.textContent = '编辑'
+            button.id = id
+            button.onclick = function(xzkjcnxlkcjlk){
+                //console.log('我被点击了')
+                //被用户点击的那个按钮
+                //console.log(button)
+
+                //target就是用户点的那个按钮
+                var button2 =  xzkjcnxlkcjlk['target']
+                var img2 = button2.previousSibling
+                var key = button2['id']
+
+                //怎么知道button对应的图片：img是button的哥
+                //console.log(xzkjcnxlkcjlk['target']['id'])
+                //key = xzkjcnxlkcjlk['target']['id']//q w e r...
+                var x = prompt('给我一个网址')//qq.com ...
+                hash[key] = x//hash变更
+                img2.src = 'http://'+x + '/favicon.ico'//找到按钮对用的图片
+                img2.onerror = function(xxx){
+                     xxx.target.src = '//i.loli.net/2018/02/02/5a74247643ea8.png'
+                }
+                //变更存档
+                localStorage.setItem('zzz',JSON.stringify(hash))
+                console.log(hash)
+            }
+            return button
+        }
+        function createImage(domain){
+            var img = tag('img')
+            if(domain){
+                img.src = 'http://' + domain +'/favicon.ico'//rowp[index] q w e
+            }else{
+                //无协议的图床地址
+                img.src = '//i.loli.net/2018/02/02/5a74247643ea8.png'
+            }
+            //监听请求失败的事件
+            img.onerror = function(xxx){
+                //console.log('下载失败了')
+                //console.log(event)//打印出和事件相关的
+                xxx.target.src = '//i.loli.net/2018/02/02/5a74247643ea8.png'
+            }
+            return img
+        }
+    </script>
+
+   
+
+
+
+
+
+
+</body>
+</html>
